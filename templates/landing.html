@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-gray-200">
+    <!-- Header -->
+    <header class="fixed w-full top-0 left-0 z-50 bg-gray-800 bg-opacity-90 backdrop-blur-md">
+        <nav class="container mx-auto flex justify-between items-center px-4 py-3 md:px-6">
+            <h1 class="text-xl md:text-2xl font-bold text-teal-400">Emotion App</h1>
+            <button id="menu-btn" class="md:hidden text-gray-200 text-2xl focus:outline-none">&#9776;</button>
+            <ul id="menu" class="hidden md:flex space-x-2 lg:space-x-6 items-center">
+                <li><a href="#home" class="hover:text-teal-400 text-sm lg:text-base">  Home</a></li>
+                <li><a href="#about" class="hover:text-teal-400 text-sm lg:text-base">About</a></li>
+                <li><a href="#how-to-use" class="hover:text-teal-400 text-sm lg:text-base">How to Use</a></li>
+                <li><a href="#team" class="hover:text-teal-400 text-sm lg:text-base">Team</a></li>
+                <li><a href="#contact" class="hover:text-teal-400 text-sm lg:text-base">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex flex-col md:flex-row items-center justify-center text-left px-4 md:px-6 bg-cover bg-center relative pt-20" style="background-image: url('{{ url_for('static', filename='emotion.jpg') }}');">
+        <!-- Dark Overlay -->
+        <div class="absolute inset-0 bg-[#1A2433] bg-opacity-90"></div>
+
+        <div class="relative z-10 max-w-full md:max-w-2xl md:w-1/2 text-white space-y-4">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-teal-400 font-sans leading-tight">
+                Advanced AI-Powered<br> Emotion Detection & Smart Recommendations
+            </h1>
+            <p class="mt-4 text-base md:text-lg font-light leading-relaxed text-gray-300">
+                Experience next-level emotion analysis with cutting-edge AI. Our system detects and understands your emotions in real-time, offering precise, scientifically backed recommendations to improve your mood and productivity.
+            </p>
+            <p class="mt-2 text-gray-400 text-sm md:text-base">
+                Join thousands of users enhancing their emotional well-being with AI-driven insights.
+            </p>
+
+            <div class="mt-6 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="{{ url_for('index') }}" class="px-6 py-2 md:px-8 md:py-3 bg-teal-500 text-gray-900 font-semibold rounded-lg hover:bg-teal-600 transition text-center">
+                    Get Started
+                </a>
+                <a href="#about" class="px-6 py-2 md:px-8 md:py-3 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-600 transition text-center">
+                    Learn More
+                </a>
+            </div>
+
+            <!-- Accuracy Stats -->
+            <div class="mt-8 grid grid-cols-3 gap-2 md:gap-6 text-center">
+                <div class="p-2 md:p-4 bg-gray-800 rounded-lg shadow-lg">
+                    <h3 class="text-xl md:text-3xl font-bold text-teal-400"><span id="emotion-accuracy">1</span>%</h3>
+                    <p class="text-xs md:text-sm text-gray-300 mt-1">Emotion Detection Accuracy</p>
+                </div>
+                <div class="p-2 md:p-4 bg-gray-800 rounded-lg shadow-lg">
+                    <h3 class="text-xl md:text-3xl font-bold text-teal-400"><span id="recommendation-accuracy">1</span>%</h3>
+                    <p class="text-xs md:text-sm text-gray-300 mt-1">Recommendation Accuracy</p>
+                </div>
+                <div class="p-2 md:p-4 bg-gray-800 rounded-lg shadow-lg">
+                    <h3 class="text-xl md:text-3xl font-bold text-teal-400"><span id="medical-approval">1</span>+</h3>
+                    <p class="text-xs md:text-sm text-gray-300 mt-1">Medical & HR Departments Approved</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side Image -->
+        <div class="relative z-10 mt-8 md:mt-0 md:w-1/2 flex justify-center">
+            <img src="{{ url_for('static', filename='emotion.jpg') }}" 
+                 alt="Emotion AI" 
+                 class="w-48 sm:w-64 md:w-80 lg:w-96 rounded-lg shadow-lg opacity-90">
+        </div>
+    </section>
+
+    <!-- Number Animation Script -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function animateNumber(id, start, end, duration) {
+            let obj = document.getElementById(id);
+            let range = end - start;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            let startTime = new Date().getTime();
+            let endTime = startTime + duration;
+            
+            function run() {
+                let now = new Date().getTime();
+                let remaining = Math.max((endTime - now) / duration, 0);
+                let value = Math.round(end - (remaining * range));
+                obj.innerHTML = value;
+                if (value < end) {
+                    requestAnimationFrame(run);
+                }
+            }
+            requestAnimationFrame(run);
+        }
+
+        animateNumber("emotion-accuracy", 1, 98, 2000);
+        animateNumber("recommendation-accuracy", 1, 90, 2000);
+        animateNumber("medical-approval", 1, 150, 2000);
+    });
+    </script>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 md:py-20 bg-gray-900 text-gray-200">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <!-- Left Side: Image -->
+            <div class="md:w-1/2 mb-6 md:mb-0 md:mr-8">
+                <img src="{{ url_for('static', filename='about.jpg') }}" 
+                     alt="Emotion AI" 
+                     class="rounded-lg shadow-lg w-full">
+            </div>
+
+            <!-- Right Side: Text -->
+            <div class="md:w-1/2 text-left">
+                <h2 class="text-3xl md:text-4xl font-bold text-teal-400">Our Mission</h2>
+                <p class="mt-4 text-base md:text-lg">
+                    At -Emotion AI-, we are dedicated to enhancing emotional intelligence through state-of-the-art facial recognition and deep learning algorithms.  
+                    Our goal is to help individuals and organizations by providing real-time emotional analysis and AI-powered recommendations to improve mental well-being, productivity, and decision-making.
+                </p>
+                <p class="mt-4 text-base md:text-lg">
+                    Our advanced system understands human emotions through micro-expressions, voice tone, and behavioral patterns.  
+                    Whether you're a professional, student, or wellness enthusiast, our AI empowers you with personalized insights and actionable recommendations to reduce stress, enhance mood, and boost efficiency.
+                </p>
+
+                <!-- Features -->
+                <div class="mt-6 grid grid-cols-2 gap-4 text-gray-300">
+                    <div class="flex items-center">
+                        <span class="text-teal-400 text-xl md:text-2xl">🔍</span>
+                        <p class="ml-2 text-sm md:text-base">
+                            <strong>Advanced Emotion Analysis</strong><br>Real-time detection with deep learning.
+                        </p>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-teal-400 text-xl md:text-2xl">⚡</span>
+                        <p class="ml-2 text-sm md:text-base">
+                            <strong>Instant AI Recommendations</strong><br>Get personalized suggestions.
+                        </p>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-teal-400 text-xl md:text-2xl">🧘‍♂️</span>
+                        <p class="ml-2 text-sm md:text-base">
+                            <strong>Stress & Mood Enhancement</strong><br>Tools to relieve anxiety and improve focus.
+                        </p>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-teal-400 text-xl md:text-2xl">🏥</span>
+                        <p class="ml-2 text-sm md:text-base">
+                            <strong>Trusted by Experts</strong><br>Backed by 150+ medical & HR organizations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Use Section -->
+    <section id="how-to-use" class="py-16 md:py-20 text-center bg-gray-900">
+        <h2 class="text-3xl md:text-4xl font-bold text-teal-400">How It Works</h2>
+        <p class="mt-4 max-w-2xl mx-auto text-base md:text-lg text-gray-300">
+            Follow these three easy steps to get started with our AI-powered emotion detection system.
+        </p>
+
+        <!-- Steps -->
+        <div class="mt-8 flex flex-wrap justify-center gap-4 md:gap-8">
+            <div class="w-full sm:w-64 p-4 md:p-6 bg-gray-800 rounded-lg hover:scale-105 transition">
+                <h3 class="text-lg md:text-xl font-bold text-teal-400">1. Register/Login</h3>
+                <p class="mt-2 text-sm md:text-base">Sign up or log in to access the emotion detection system.</p>
+            </div>
+            <div class="w-full sm:w-64 p-4 md:p-6 bg-gray-800 rounded-lg hover:scale-105 transition">
+                <h3 class="text-lg md:text-xl font-bold text-teal-400">2. Capture Image</h3>
+                <p class="mt-2 text-sm md:text-base">Use your webcam or upload an image for emotion analysis.</p>
+            </div>
+            <div class="w-full sm:w-64 p-4 md:p-6 bg-gray-800 rounded-lg hover:scale-105 transition">
+                <h3 class="text-lg md:text-xl font-bold text-teal-400">3. Get Predictions</h3>
+                <p class="mt-2 text-sm md:text-base">Our AI analyzes your emotions and provides real-time recommendations.</p>
+            </div>
+        </div>
+
+        <!-- Image Slideshow -->
+        <div class="mt-10 relative w-64 sm:w-80 mx-auto">
+            <img id="slideshow" class="rounded-lg shadow-lg w-full h-auto fade" 
+                 src="{{ url_for('static', filename='s1.png') }}" 
+                 alt="How to Use Screenshot">
+        </div>
+    </section>
+
+    <style>
+        /* Smooth transition effect */
+        .fade {
+            transition: opacity 1s ease-in-out;
+        }
+    </style>
+
+    <script>
+        const images = [
+            "{{ url_for('static', filename='s1.png') }}",
+            "{{ url_for('static', filename='s2.png') }}",
+            "{{ url_for('static', filename='s3.png') }}",
+            "{{ url_for('static', filename='s4.png') }}"
+        ];
+        let currentImageIndex = 0;
+        const slideshowElement = document.getElementById("slideshow");
+
+        function changeImage() {
+            slideshowElement.style.opacity = 0;  // Fade out
+            setTimeout(() => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                slideshowElement.src = images[currentImageIndex];
+                slideshowElement.style.opacity = 1;  // Fade in
+            }, 1000); // Wait for fade out before changing image
+        }
+
+        setInterval(changeImage, 4000); // Change image every 4 seconds
+    </script>
+
+    <!-- Team Section -->
+    <section id="team" class="py-16 md:py-20 text-center bg-gray-800">
+        <h2 class="text-3xl md:text-4xl font-bold text-teal-400">Meet the Team</h2>
+        <p class="mt-4 text-base md:text-lg text-gray-300">
+            Our dedicated team of AI experts, designers, and developers work together to bring this innovative project to life.
+        </p>
+        
+        <div class="mt-8 flex flex-wrap justify-center gap-4 md:gap-8">
+            {% for member in [
+                {'name': 'Vineetha K', 'role': 'Project Manager', 'linkedin': 'https://www.linkedin.com/in/vineetha-kadimisetti-30297a270', 'github': 'https://github.com/vineetha-2606', 'image': 'team1.jpg'},
+                {'name': 'Sivaramaraju P', 'role': 'Backend developer', 'linkedin': 'https://www.linkedin.com/in/sivaramaraju-pakalapati-b45045270/', 'github': 'https://github.com/SivaRamaRaju2310', 'image': 'team2.jpg'},
+                {'name': 'Keerthi M', 'role': 'ML Enginner', 'linkedin': 'https://www.linkedin.com/in/keerthi-muthabathula-715909321', 'github': 'https://github.com/Keerthi19591', 'image': 'team3.jpg'},
+                {'name': 'Uday Ch', 'role': 'Frontend developer', 'linkedin': 'https://www.linkedin.com/in/uday-kiran-8bb4342a1', 'github': 'https://github.com/Udaykiran265276', 'image': 'team4.jpg'},
+                {'name': 'khajababu Shaik', 'role': 'Data Analyst', 'linkedin': 'https://www.linkedin.com/in/khajababu-shaik-4b3128358', 'github': 'https://github.com/khaja551', 'image': 'team5.jpg'}
+            ] %}
+            <div class="w-full sm:w-64 p-4 md:p-6 bg-gray-700 rounded-lg hover:scale-105 transition shadow-lg">
+                <!-- Profile Image -->
+                <img src="{{ url_for('static', filename=member.image) }}" 
+                     alt="{{ member.name }}" 
+                     class="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full border-4 border-teal-400 shadow-lg object-cover">
+                
+                <!-- Name & Role -->
+                <h3 class="text-lg md:text-xl font-bold text-teal-400 mt-4">{{ member.name }}</h3>
+                <p class="mt-2 text-sm md:text-base text-gray-300">{{ member.role }}</p>
+                
+                <!-- Social Media Icons -->
+                <div class="flex justify-center gap-4 mt-4 text-teal-300">
+                    <a href="{{ member.linkedin }}" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-linkedin text-xl md:text-2xl hover:text-gray-200"></i>
+                    </a>
+                    <a href="{{ member.github }}" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-github text-xl md:text-2xl hover:text-gray-200"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 md:py-20 px-4 md:px-8 bg-gray-900 text-white text-center">
+        <div class="max-w-4xl mx-auto">
+            <!-- Contact Form -->
+            <h2 class="text-3xl md:text-4xl font-bold text-teal-400 mb-4 md:mb-6">📩 Get in Touch</h2>
+            <p class="mb-4 md:mb-6 text-sm md:text-base">
+                Have a question or just want to say hi? 🤔💬 Fill out the form below, and we'll get back to you ASAP! 🚀
+            </p>
+            <form action="mailto:pakalapatisivaramaraju@gmail.com" method="post" class="space-y-4">
+                <input type="text" name="name" placeholder="🙋‍♂️ Your Name" class="w-full p-2 md:p-3 bg-gray-800 rounded text-sm md:text-base">
+                <input type="email" name="email" placeholder="📧 Your Email" class="w-full p-2 md:p-3 bg-gray-800 rounded text-sm md:text-base">
+                <textarea name="message" placeholder="💬 Your Message" rows="5" class="w-full p-2 md:p-3 bg-gray-800 rounded text-sm md:text-base"></textarea>
+                <button type="submit" class="w-full px-4 py-2 md:px-6 md:py-3 bg-teal-500 text-gray-900 font-semibold rounded-lg hover:bg-teal-600 transition text-sm md:text-base">
+                    🚀 Send Message
+                </button>
+            </form>
+
+            <!-- Contact Information -->
+            <div class="mt-8 md:mt-12 bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg">
+                <h3 class="text-2xl md:text-3xl font-bold text-teal-400 mb-3 md:mb-4">📍 Contact Information</h3>
+                <p class="mb-3 md:mb-4 text-sm md:text-base">
+                    Have a specific inquiry? Need assistance? Don't hesitate to reach out! We're always here to help. 💡😊
+                </p>
+                <p class="mb-2 text-sm md:text-base"><span class="font-semibold">🏠 Our Office:</span> Visit us at our headquarters! Our doors are always open for a friendly chat. ☕</p>
+                <p class="mb-2 text-sm md:text-base"><span class="font-semibold">📞 Call Us:</span> Have an urgent question? Give us a ring! 📲 +123 456 7890</p>
+                <p class="mb-2 text-sm md:text-base"><span class="font-semibold">📧 Email Us:</span> Prefer writing? Drop us an email, and we'll respond ASAP! ✉️ pakalapatisivaramaraju@gmail.com</p>
+                <p class="mt-3 md:mt-4 text-sm md:text-base"><span class="font-semibold">🌍 Follow Us:</span> Stay connected! Find us on social media for updates, news, and more. 🔗</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 md:py-10 bg-gray-900 text-gray-400">
+        <div class="container mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-left">
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-lg md:text-xl font-semibold text-teal-400 mb-3 md:mb-4">🔗 Quick Links</h3>
+                <ul class="space-y-2 text-sm md:text-base">
+                    <li><a href="#home" class="hover:text-teal-400">🏠 Home</a></li>
+                    <li><a href="#about" class="hover:text-teal-400">ℹ️ About</a></li>
+                    <li><a href="#how-to-use" class="hover:text-teal-400">🛠️ How to Use</a></li>
+                    <li><a href="#team" class="hover:text-teal-400">👨‍💻 Team</a></li>
+                    <li><a href="#contact" class="hover:text-teal-400">📩 Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+                <h3 class="text-lg md:text-xl font-semibold text-teal-400 mb-3 md:mb-4">📞 Contact Us</h3>
+                <p class="text-sm md:text-base">📍 Address: 123 Main Street, City, Country</p>
+                <p class="text-sm md:text-base">📧 Email: <a href="mailto:pakalapatisivaramaraju@gmail.com" class="hover:text-teal-400">pakalapatisivaramaraju@gmail.com</a></p>
+                <p class="text-sm md:text-base">📞 Phone: +123 456 7890</p>
+            </div>
+
+            <!-- Social Media -->
+            <div>
+                <h3 class="text-lg md:text-xl font-semibold text-teal-400 mb-3 md:mb-4">🌍 Follow Us</h3>
+                <div class="flex space-x-4 text-sm md:text-base">
+                    <a href="https://x.com/Sivaramaraju_?t=CyAnyZNYKEzOrCYb3ErxsQ&s=09" target="_blank" class="hover:text-teal-400">🐦 Twitter</a>
+                    <a href="https://www.facebook.com/share/1JDrhZ9cn2/" target="_blank" class="hover:text-teal-400">📘 Facebook</a>
+                    <a href="https://www.instagram.com/sivaramaraju__?igsh=MXdwa2Q2YnNvM2Z4cA==" target="_blank" class="hover:text-teal-400">📸 Instagram</a>
+                    <a href="https://www.linkedin.com/in/sivaramaraju-pakalapati-b45045270" target="_blank" class="hover:text-teal-400">💼 LinkedIn</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="mt-6 md:mt-8 border-t border-gray-700 pt-4 text-center text-sm md:text-base">
+            <p>© 2025 Emotion Detection App. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("menu-btn").addEventListener("click", function() {
+            document.getElementById("menu").classList.toggle("hidden");
+        });
+    </script>
+</body>
+</html>

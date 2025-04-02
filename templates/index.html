@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion-Based Recommendation System</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons -->
+    <script defer src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <!-- JavaScript File -->
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#303841',
+                        'slate': '#3a4750',
+                        'teal': '#00adb5',
+                        'light': '#eeeeee',
+                    },
+                    animation: {
+                        "fade-in": "fadeIn 1s ease-out forwards",
+                        "glow": "glowEffect 2s infinite alternate",
+                        "mirror-shine": "mirrorShine 8s infinite linear",
+                        "reflection": "reflectionEffect 6s infinite linear",
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            "0%": { opacity: 0, transform: "scale(0.9)" },
+                            "100%": { opacity: 1, transform: "scale(1)" },
+                        },
+                        glowEffect: {
+                            "0%": { boxShadow: "0px 0px 10px #303841" },
+                            "50%": { boxShadow: "0px 0px 15px #00adb5" },
+                            "100%": { boxShadow: "0px 0px 10px #3a4750" },
+                        },
+                        mirrorShine: {
+                            "0%": { transform: "translateX(-100%) rotate(30deg)" },
+                            "100%": { transform: "translateX(100%) rotate(30deg)" },
+                        },
+                        reflectionEffect: {
+                            "0%": { transform: "translateX(-100%) rotate(30deg)" },
+                            "100%": { transform: "translateX(100%) rotate(30deg)" },
+                        },
+                    },
+                    backgroundImage: {
+                        'mirror-gradient': 'linear-gradient(135deg, rgba(238, 238, 238, 0.9) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(190, 190, 190, 0.8) 50%, rgba(255, 255, 255, 0.8) 75%, rgba(238, 238, 238, 0.9) 100%)',
+                        'radial-mirror': 'radial-gradient(circle at center, rgba(255, 255, 255, 0.5), rgba(58, 71, 80, 0.8))',
+                        'games-mirror': 'linear-gradient(135deg, rgba(0, 173, 181, 0.9), rgba(0, 193, 201, 0.8))',
+                        'songs-mirror': 'linear-gradient(135deg, rgba(48, 56, 65, 0.9), rgba(60, 70, 80, 0.8))',
+                        'quotes-mirror': 'linear-gradient(135deg, rgba(238, 238, 238, 0.9), rgba(255, 255, 255, 0.8))',
+                        'border-gradient': 'linear-gradient(45deg, #303841, #3a4750, #00adb5, #303841)',
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        /* Essential styles that can't be done with Tailwind classes */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 10px solid;
+            border-radius: 10px;
+            border-image-source: linear-gradient(45deg, #303841, #3a4750, #00adb5, #303841);
+            border-image-slice: 1;
+            animation: mirrorBorder 5s infinite linear;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        @keyframes mirrorBorder {
+            0% { border-image-source: linear-gradient(45deg, #303841, #3a4750, #00adb5, #303841); }
+            33% { border-image-source: linear-gradient(45deg, #3a4750, #00adb5, #303841, #3a4750); }
+            66% { border-image-source: linear-gradient(45deg, #00adb5, #303841, #3a4750, #00adb5); }
+            100% { border-image-source: linear-gradient(45deg, #303841, #3a4750, #00adb5, #303841); }
+        }
+        
+        .mirror-effect::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(30deg);
+            animation: mirrorShine 8s infinite linear;
+        }
+    </style>
+</head>
+<body class="relative text-center p-6 font-[Poppins] bg-mirror-gradient">
+    
+    {% if 'username' not in session %}
+        <script>
+            window.location.href = "{{ url_for('login') }}";
+        </script>
+    {% endif %}
+    
+    <div class="container mx-auto">
+        <!-- Header Section -->
+        <div class="bg-navy text-light rounded-lg p-4 mb-5 shadow-lg relative overflow-hidden">
+            <!-- Mirror effect container with z-index to keep content above the shine -->
+            <div class="absolute inset-0 animate-mirror-shine opacity-50"></div>
+            
+            <h1 class="relative z-10 text-3xl md:text-4xl font-bold text-center 
+                bg-gradient-to-r from-teal to-light text-transparent bg-clip-text
+                drop-shadow-lg animate-fade-in inline-block">
+                🎭 Emotion-Based Recommendation System
+            </h1>
+
+            <p class="mt-2 text-lg relative z-10">Welcome, {{ session['username'] }}!</p>
+            <a href="{{ url_for('logout') }}" class="text-teal hover:text-light font-semibold mt-2 inline-block transition-colors duration-300 relative z-10">Logout</a>
+        </div>
+
+        <!-- Circular Upload Section -->
+        <div class="relative m-4 w-52 h-52 rounded-full border-4 border-teal bg-radial-mirror flex items-center justify-center mx-auto mb-6 overflow-hidden animate-glow">
+            <video id="video" autoplay class="w-full h-full object-cover hidden"></video>
+            <canvas id="canvas" class="hidden"></canvas>
+            <img id="captured-image" src="" alt="Captured Image" class="w-full h-full object-cover rounded-full hidden">
+            
+            <!-- GIF Placeholder -->
+            <div id="placeholder" class="absolute inset-0 flex items-center justify-center animate-fade-in">
+                <img src="{{ url_for('static', filename='giphy.gif') }}" alt="Loading GIF" class="w-48 opacity-80">
+            </div>
+        </div>
+
+        <!-- Capture Button -->
+        <button id="capture" class="bg-teal text-light px-6 py-3 rounded-lg font-semibold 
+            shadow-md transform transition-all duration-300 hover:bg-slate hover:scale-105 
+            active:bg-navy active:scale-95 relative overflow-hidden">
+            Capture & Detect
+        </button>
+
+        <!-- Animated Recommendation Box -->
+        <div id="results" class="mt-6 p-6 bg-slate text-light rounded-xl shadow-lg opacity-0 scale-95 
+            transition-all duration-700 ease-out relative overflow-hidden">
+            <!-- Mirror effect container -->
+            <div class="absolute inset-0 animate-mirror-shine opacity-50"></div>
+            
+            <h2 class="text-xl font-bold mb-6 text-center relative z-10">
+                Detected Emotion: <span id="emotion" class="text-teal"></span>
+            </h2>
+
+            <!-- Games Recommendation -->
+            <div class="bg-games-mirror text-navy rounded-lg shadow-md p-6 mb-6 relative overflow-hidden">
+                <!-- Mirror effect container -->
+                <div class="absolute inset-0 animate-mirror-shine opacity-50"></div>
+                
+                <h3 class="text-lg font-semibold text-center shadow-sm relative z-10">🎮 Recommended Games</h3>
+                <div id="game-recommendations" class="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10"></div>
+            </div>
+
+            <!-- Songs Recommendation -->
+            <div class="bg-songs-mirror text-light rounded-lg shadow-md p-6 mb-6 relative overflow-hidden">
+                <!-- Mirror effect container -->
+                <div class="absolute inset-0 animate-mirror-shine opacity-50"></div>
+                
+                <h3 class="text-lg font-semibold text-center shadow-sm relative z-10">🎵 Recommended Songs</h3>
+                <div id="song-recommendations" class="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10"></div>
+            </div>
+
+            <!-- Quotes Recommendation -->
+            <div class="bg-quotes-mirror text-navy rounded-lg shadow-md p-6 relative overflow-hidden">
+                <!-- Mirror effect container -->
+                <div class="absolute inset-0 animate-mirror-shine opacity-50"></div>
+                
+                <h3 class="text-lg font-semibold text-center shadow-sm relative z-10">📜 Recommended Quotes</h3>
+                <div id="quote-recommendations" class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

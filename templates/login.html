@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'first': '#303841',
+                        'second': '#3a4750',
+                        'third': '#00adb5',
+                        'fourth': '#eeeeee'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-first min-h-screen flex items-center justify-center">
+    <div class="bg-fourth p-8 rounded-lg shadow-lg w-96 text-center relative overflow-hidden">
+        <!-- Marble effect overlay -->
+        <div class="absolute top-0 left-0 w-full h-full bg-opacity-10 bg-white bg-gradient-to-br from-transparent via-white to-transparent pointer-events-none"></div>
+        
+        <h2 class="text-2xl font-bold mb-4 text-first relative z-10">Login</h2>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="text-red-500 mb-4 relative z-10">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('login') }}" class="relative z-10">
+            <input type="email" name="email" placeholder="Enter your email" required class="w-full p-2 mb-4 border-2 border-second bg-white bg-opacity-80 rounded-md focus:outline-none focus:ring-2 focus:ring-third">
+            
+            <input type="password" name="password" placeholder="Enter your password" required class="w-full p-2 mb-4 border-2 border-second bg-white bg-opacity-80 rounded-md focus:outline-none focus:ring-2 focus:ring-third">
+            
+            <button type="submit" class="w-full bg-third text-fourth py-2 rounded-md hover:bg-opacity-90 transition duration-300 font-medium">Login</button>
+        </form>
+
+        <p class="mt-4 text-second relative z-10">Don't have an account? <a href="{{ url_for('register') }}" class="text-third font-medium hover:underline">Register</a></p>
+        
+        <!-- Marble accent elements -->
+        <div class="absolute -top-8 -right-8 w-16 h-16 rounded-full bg-third opacity-30"></div>
+        <div class="absolute -bottom-8 -left-8 w-16 h-16 rounded-full bg-third opacity-30"></div>
+    </div>
+</body>
+</html>
